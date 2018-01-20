@@ -1962,3 +1962,9 @@ form label {
 .force_black{
   color: black;
 }
+.white{
+  color: white;
+}
+.gtco-cover-shorter{
+  height: 600px;
+}

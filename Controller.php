@@ -17,20 +17,40 @@ class Controller{
 
     	if(array_key_exists('section',$get) && !empty(($get['section'])))
     	{
-			$section= $get['section'];
+			$section = $get['section'];
     	}
 
     	return $section;
     }
 
-    public function getCommerceList($post){
+    public function getCommerceList($get){
+
+    	require_once './Models/UsersModel.php';
 
     	$usersmodel = new UsersModel();
-		$city = $post['ciudad'];
-		$name = $post['nombre'];
+		$city = $get['ciudad'];
+		$name = $get['nombre'];
 
-		return $usersmodel->getCommercesMatch($city,$name);
+        $commerce_list = $usersmodel->getCommercesMatch($city,$name);
+        return $commerce_list;
+
     }
+    public function getCommerce($get){
 
+        require_once './Models/UsersModel.php';
+        $usersmodel = new UsersModel();
+        $username = $get['id'];
+
+        
+        $ret = $usersmodel->getCommerceId($username);
+
+        return $ret;
+    }
+    public function makeReservation(){
+
+    }
+    public function cancelReservation(){
+
+    }
 }
 ?>

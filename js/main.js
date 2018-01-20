@@ -292,14 +292,23 @@
 		}
 	};
 
-
+	//Modified to show the widget at the top
 	var dateTimeForm = function() {
 		// $('#date-start').datepicker();
-		$('#date').datetimepicker({
-         format: 'DD/MM/YYYY'
+		$('.datePicker').datetimepicker({
+         	format: 'DD/MM/YYYY',
+         	widgetPositioning: {
+            	horizontal: 'left',
+            	vertical: 'top'
+        	},
+        	daysOfWeekDisabled: [6],
      	});
-		$('#time').datetimepicker({
-			format: 'LT'	
+		$('.timePicker').datetimepicker({
+			format: 'LT',
+			widgetPositioning: {
+            	horizontal: 'left',
+            	vertical: 'top',
+        	}
 		});
 
 		

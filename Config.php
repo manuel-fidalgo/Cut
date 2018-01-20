@@ -11,6 +11,14 @@ class Config{
     function printPath($string){
     	echo self::PATH.$string;
     }
+    
+    function debugArray($array){
+
+    	print "<pre>";
+		print_r($commerce);
+		print "</pre>";
+
+    }
 
 }
 ?>

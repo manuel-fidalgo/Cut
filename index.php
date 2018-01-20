@@ -1,5 +1,6 @@
 <!-- View generator, not a class -->
 <?php
+
 include './Config.php';
 include './Controller.php';
 
@@ -13,8 +14,12 @@ $config = new Config();
 $section_to_render = $controller->getSection($_GET);
 
 if($section_to_render == "busqueda"){
-	$listaPeluquerias = $controller->getListaPeluquerias($_POST);
+	$listaPeluquerias = $controller->getCommerceList($_GET);
 }
+if($section_to_render == "commerce"){
+	$commerce = $controller->getCommerce($_GET);
+}
+
 
 
 ?>
@@ -26,9 +31,9 @@ if($section_to_render == "busqueda"){
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Cut! &mdash; Reserva online.</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Free HTML5 Website Template by GetTemplates.co" />
-	<meta name="keywords" content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
-	<meta name="author" content="GetTemplates.co" />
+	<meta name="description" content="Cut! reservas online" />
+	<meta name="keywords" content="Peluquería, reservas, online" />
+	<meta name="author" content="mfidaf01 & jgarcj00" />
 
 	<!-- Facebook and Twitter integration -->
 	<meta property="og:title" content=""/>
@@ -68,6 +73,13 @@ if($section_to_render == "busqueda"){
 
 	<!-- Modernizr JS -->
 	<script src="js/modernizr-2.6.2.min.js"></script>
+	<!-- jQuery -->
+	<script src="js/jquery.min.js"></script>
+	<!-- jQuery Easing -->
+	<script src="js/jquery.easing.1.3.js"></script>
+	<!-- Bootstrap -->
+	<script src="js/bootstrap.min.js"></script>
+	
 	<!-- FOR IE9 below -->
 	<!--[if lt IE 9]>
 	<script src="js/respond.min.js"></script>
@@ -94,15 +106,15 @@ if($section_to_render == "busqueda"){
 						</div>
 						<div class="col-xs-8 text-right menu-1">
 							<ul>
-								<li><a href="menu.html">Menu</a></li>
-								<li class="has-dropdown">
+								<li><a href="<?php $config->printPath('');?>">Principal</a></li>
+								<!--<li class="has-dropdown">
 									<a href="services.html">Servicios</a>
 									<ul class="dropdown">
 										<li><a href="#">Food Catering</a></li>
 										<li><a href="#">Wedding Celebration</a></li>
 										<li><a href="#">Birthday's Celebration</a></li>
 									</ul>
-								</li>
+								</li> -->
 								<li><a href="<?php $config->printPath('?section=singup');?>"">Registrarse</a></li>
 								<li class="btn-cta"><a href="<?php $config->printPath('?section=loggin');?>"><span>Iniciar Sesión</span></a></li>
 							</ul>	
@@ -110,122 +122,109 @@ if($section_to_render == "busqueda"){
 					</div>
 				</div>
 			</nav>
-
-			<header id="gtco-header" class="gtco-cover gtco-cover-md" role="banner" style="background-image: url(images/backgrounds/main_bg_1.jpg)" data-stellar-background-ratio="0.5">
-				<div class="overlay"></div>
-
-				<!-- FIRST CONTAINER (CONTAINER WHERE THE BACKGROUND IS) -->
-				<div class="gtco-container">
-					<div class="row">
-						<div class="col-md-12 col-md-offset-0 text-left">
-
-							<?php 
-
+			<!-- FIRST CONTAINER (CONTAINER WHERE THE BACKGROUND IS)
+									HEADER 
+								-->
+								
+								<?php 
 								if($section_to_render == "" ){
 									include "./Templates/NoSectionTemplate.php";
 								}else if($section_to_render == "loggin"){
 									include "./Templates/LogginTemplate.php";
 								}else if($section_to_render == "singup"){
 									include "./Templates/SingUpTemplate.php";
+								}else if($section_to_render == "commerce"){
+									include "./Templates/CommercePageHeader.php";
 								}else{
 									include "./Templates/NoSectionTemplate.php";
 								}
+								?>
+								<!--Resultados de la busqueda en caso de que se haya realizado ya.-->
 
-							?>
+								<div id="gtco-counter" class="gtco-section">
+									<div class="gtco-container">
+										<div class="row">
 
-						</div>
-					</div>
-				</div>
-			</header>	
-			<!--Resultados de la busqueda en caso de que se haya realizado ya.-->
+											<?php
 
-			<div id="gtco-counter" class="gtco-section">
-				<div class="gtco-container">
-					<div class="row">
+											if($section_to_render == "busqueda"){
+												include "./Views/busqueda.php";
+											}else if($section_to_render == "commerce"){
+												include "./Templates/CommercePageServices.php";
+											}else{
+												include "./Templates/DefaultTemplate.php";
+											}
+											?>
+											
+										</div>
+									</div>
+								</div>
 
-						<?php
-
-								if($section_to_render == "busqueda"){
-									include "./Views/busqueda.php";
-								}else{
-									include "./Templates/DefaultTemplate.php";
-								}
-						?>
-						
-					</div>
-				</div>
-			</div>
-
-			<footer id="gtco-footer" role="contentinfo" style="background-image: url(images/backgrounds/main_bg_1.jpg)" data-stellar-background-ratio="0.5">
-				<div class="overlay"></div>
-				<div class="gtco-container">
-					<div class="row row-pb-md">
+								<footer id="gtco-footer" role="contentinfo" style="background-image: url(images/backgrounds/main_bg_1.jpg)" data-stellar-background-ratio="0.5">
+									<div class="overlay"></div>
+									<div class="gtco-container">
+										<div class="row row-pb-md">
 
 
 
 
-						<div class="col-md-12 text-center">
-							<div class="gtco-widget">
-								<h3>Donde encontrarnos.</h3>
-								<ul class="gtco-quick-contact">
-									<li><a href="#"><i class="icon-phone"></i>+34 657 11 43</a></li>
-									<li><a href="#"><i class="icon-mail2"></i>mfidaf01@estudiantes.unileon.es</a></li>
-									<li><a href="#"><i class="icon-chat"></i>Contacta con nosotros</a></li>
-								</ul>
+											<div class="col-md-12 text-center">
+												<div class="gtco-widget">
+													<h3>Donde encontrarnos.</h3>
+													<ul class="gtco-quick-contact">
+														<li><a href="#"><i class="icon-phone"></i>+34 657 11 43</a></li>
+														<li><a href="#"><i class="icon-mail2"></i>mfidaf01@estudiantes.unileon.es</a></li>
+														<li><a href="#"><i class="icon-chat"></i>Contacta con nosotros</a></li>
+													</ul>
+												</div>
+												<div class="gtco-widget">
+													<h3>Redes sociales</h3>
+													<ul class="gtco-social-icons">
+														<li><a target="_blank" href="https://twitter.com"><i class="icon-twitter"></i></a></li>
+														<li><a target="_blank" href="https://facebook.com"><i class="icon-facebook"></i></a></li>
+														<li><a target="_blank" href="https://linkedin.com"><i class="icon-linkedin"></i></a></li>
+														<li><a target="_blank" href="https://cut.com"><i class="icon-dribbble"></i></a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+
+
+
+									</div>
+								</footer>
+								<!-- </div> -->
+
 							</div>
-							<div class="gtco-widget">
-								<h3>Redes sociales</h3>
-								<ul class="gtco-social-icons">
-									<li><a target="_blank" href="https://twitter.com"><i class="icon-twitter"></i></a></li>
-									<li><a target="_blank" href="https://facebook.com"><i class="icon-facebook"></i></a></li>
-									<li><a target="_blank" href="https://linkedin.com"><i class="icon-linkedin"></i></a></li>
-									<li><a target="_blank" href="https://cut.com"><i class="icon-dribbble"></i></a></li>
-								</ul>
+
+							<div class="gototop js-top">
+								<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
 							</div>
-						</div>
-					</div>
+
+							
+							<!-- Waypoints -->
+							<script src="js/jquery.waypoints.min.js"></script>
+							<!-- Carousel -->
+							<script src="js/owl.carousel.min.js"></script>
+							<!-- countTo -->
+							<script src="js/jquery.countTo.js"></script>
+
+							<!-- Stellar Parallax -->
+							<script src="js/jquery.stellar.min.js"></script>
+
+							<!-- Magnific Popup -->
+							<script src="js/jquery.magnific-popup.min.js"></script>
+							<script src="js/magnific-popup-options.js"></script>
+
+							<script src="js/moment.min.js"></script>
+							<script src="js/bootstrap-datetimepicker.min.js"></script>
 
 
+							<!-- Main -->
+							<script src="js/main.js"></script>
 
-				</div>
-			</footer>
-			<!-- </div> -->
-
-		</div>
-
-		<div class="gototop js-top">
-			<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
-		</div>
-
-		<!-- jQuery -->
-		<script src="js/jquery.min.js"></script>
-		<!-- jQuery Easing -->
-		<script src="js/jquery.easing.1.3.js"></script>
-		<!-- Bootstrap -->
-		<script src="js/bootstrap.min.js"></script>
-		<!-- Waypoints -->
-		<script src="js/jquery.waypoints.min.js"></script>
-		<!-- Carousel -->
-		<script src="js/owl.carousel.min.js"></script>
-		<!-- countTo -->
-		<script src="js/jquery.countTo.js"></script>
-
-		<!-- Stellar Parallax -->
-		<script src="js/jquery.stellar.min.js"></script>
-
-		<!-- Magnific Popup -->
-		<script src="js/jquery.magnific-popup.min.js"></script>
-		<script src="js/magnific-popup-options.js"></script>
-
-		<script src="js/moment.min.js"></script>
-		<script src="js/bootstrap-datetimepicker.min.js"></script>
-
-
-		<!-- Main -->
-		<script src="js/main.js"></script>
-
-	</body>
-	</html>
+						</body>
+						</html>
 
 
 

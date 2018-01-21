@@ -30,9 +30,20 @@ class DBEndPoint {
 		$statement = $con->prepare($sql);
 		$statement ->execute($args);
 		$ret = $statement ->fetchAll();
-		// print_r($ret);
+		// print_r($ret);	
 		return $ret; 		
 	}
+	public function queryCount($sql,$args){
+
+		$con = $this->getConnection();
+
+		$statement = $con->prepare($sql);
+		$statement ->execute($args);
+		$ret = $statement->rowCount();
+		// print_r($ret);	
+		return $ret; 		
+	}
+
 	public function simplyQuery($sql){
 
 		$con = $this->getConnection();

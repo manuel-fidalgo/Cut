@@ -22,6 +22,71 @@ class Controller{
 
     	return $section;
     }
+    //This functions manages all the actions like, new user, new commerce, new reservation ...
+    //AKA action dispatcher
+    public function doActions($get)
+    {
+        $message = "";
+        if(isset($get['action'])){
+            if($get['action'] == "newreservation"){
+
+               return $this->makeReservation($get);
+            }else if ($get['action'] == "newuser") {
+                return $this->createNewUser($get);
+            }else if($get['action']=="loggin"){
+                return $this->logginUser($get);
+            }
+        }
+    }
+    public function logginUser($get){
+
+        $username = $get['username'];
+        $password = $get['password'];
+
+        require_once './Models/UsersModel.php';
+        $usersmodel = new UsersModel();
+
+        try{
+            $usersmodel->logginUser($username, $password);
+        }catch(Exception $e){
+            return "No se ha podido iniciar sesion, revisa usuario y contraseña";
+        }
+
+
+
+    }
+
+    public function createNewUser($get){
+
+        require_once './Models/UsersModel.php';
+        $usersmodel = new UsersModel();
+
+        if($get['type']==="client"){
+
+            try{
+                $usersmodel->createNewClient($get['username'],$get['mail'],$get['password_1'],$get['password_2']);
+            }catch(Exception $e){
+                return "Error creando usuario ".$e->getMessage();
+            }
+
+            return "Exito.";
+
+
+        }else if($get['type'] === "commerce"){
+
+            try{
+            $usersmodel->createNewCommerce($get['username'],$get['mail'],$get['password_1'],$get['password_2'],
+                                           $get['cif'],$get['address'],$city['city'],$get['comercialname'],$get['description']);
+            }catch(Exception $e){
+                 return "Error creando usuario ".$e->getMessage();
+            }
+
+            return "Exito";
+
+        }else{
+            header("Location: Templates/Error.php");
+        }
+    }
 
     public function getCommerceList($get){
 
@@ -46,11 +111,69 @@ class Controller{
 
         return $ret;
     }
-    public function makeReservation(){
+    public function makeReservation($get){
+
+        require_once 'Models/ReservationsModel.php';
+
+        $date = $get['date'];
+        $time = $get['time'];
+        $id = $get['id'];
+        $service = $get['service'];
+
+        $reservationmodel = new ReservationsModel();
+        $back = $reservationmodel->makeNewReservation($date, $time, $id, $service);
+        
+        if($back == 0){
+            return true;
+        }else{
+            return false;
+        }
 
     }
+
     public function cancelReservation(){
 
+    }
+    public function getCompleteCityList(){
+
+        include_once 'Data/Cities.php';
+        return $cities;
+
+    }
+    public function getSession(){
+
+        include_once "Session/SessionManager.php";
+
+        $sm = SessionManager::getInstance();
+        $user="";
+
+        try{
+            $user= $sm->getUsername();
+        }catch(Exception $e){
+
+        }
+
+        return $user;
+    }
+    function checkSession($get){
+
+        include_once "Session/SessionManager.php";
+        $sm = SessionManager::getInstance();
+        if($sm->getUsername() != $get['id']){
+            header("Location: ErrorPage.php");
+        }
+
+    }
+    function getReservationList(){
+
+        require_once './Models/ReservationsModel.php';
+        include_once "Session/SessionManager.php";
+
+        $sm = SessionManager::getInstance();
+        $user = $sm->getUsername();
+
+        $rmodel = new ReservationsModel();
+        return $rmodel->getReservationsUsername($user);
     }
 }
 ?>

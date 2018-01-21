@@ -19,17 +19,18 @@
 								<div class="tab-content">
 									<div class="tab-content-inner active" data-content="signup">
 										<h3 class="cursive-font">Loggin</h3>
-										<form action="#">
+										<form action="" method="POST">
+											<input type="hidden" name="action" value="loggin">
 											<div class="row form-group">
 												<div class="col-md-12">
 													<label for="date-start">Usuario</label>
-													<input type="text" class="form-control">
+													<input name="username" type="text" class="form-control">
 												</div>
 											</div>
 											<div class="row form-group">
 												<div class="col-md-12">
 													<label for="date-start">Contraseña</label>
-													<input type="password" class="form-control">
+													<input name="password" type="password" class="form-control">
 												</div>
 											</div>
 

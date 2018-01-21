@@ -295,22 +295,6 @@
 	//Modified to show the widget at the top
 	var dateTimeForm = function() {
 		// $('#date-start').datepicker();
-		$('.datePicker').datetimepicker({
-         	format: 'DD/MM/YYYY',
-         	widgetPositioning: {
-            	horizontal: 'left',
-            	vertical: 'top'
-        	},
-        	daysOfWeekDisabled: [6],
-     	});
-		$('.timePicker').datetimepicker({
-			format: 'LT',
-			widgetPositioning: {
-            	horizontal: 'left',
-            	vertical: 'top',
-        	}
-		});
-
 		
 	};
 

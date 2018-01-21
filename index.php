@@ -19,8 +19,15 @@ if($section_to_render == "busqueda"){
 if($section_to_render == "commerce"){
 	$commerce = $controller->getCommerce($_GET);
 }
+if($section_to_render == "profile"){
+	$controller->checkSession($_GET);
+	$reservationList = $controller->getReservationList();
+}
 
+$message_0 = $controller->doActions($_GET);
+$message_1 = $controller->doActions($_POST);
 
+$user = $controller->getSession();
 
 ?>
 
@@ -87,6 +94,17 @@ if($section_to_render == "commerce"){
 
 </head>
 <body>
+	<?php if(strlen($message_0)!=0 || strlen($message_1)!=0): ?>
+		<div class="infobar">
+			<?php 
+			if(strlen($message_0)!=0)
+				echo $message_0;
+			else
+				echo $message_1;
+
+			?>
+		</div>
+	<?php endif; ?>
 
 	<div class="gtco-loader"></div>
 	
@@ -101,8 +119,22 @@ if($section_to_render == "commerce"){
 					<div class="row">
 						<div class="col-sm-4 col-xs-12">
 							<div id="gtco-logo">
-								<a href="<?php $config->printPath(''); ?>"><img height="50px" width="50px" src="<?php $config->printPath('');?>/images/logo/logo_1.png"></a>
+
+								<?php if($user != ""){ ?>
+								<a href="<?php $config->printPath(''); ?>">
+									<img height="50px" width="50px" src="<?php $config->printPath('');?>/images/users/profile.png">
+								</a>
+								<div style="display: inline; vertical-align: middle;" >
+									<span style="font-size: 12px;"> Bienvenido de nuevo<a href="index.php?section=profile&id=<?php echo $user;?>"><?php echo $user; ?></a></span>
+								</div>
+								<?php }else{ ?>
+								<a href="<?php $config->printPath(''); ?>">
+									<img height="50px" width="50px" src="<?php $config->printPath('');?>/images/logo/logo_1.png">
+								</a>
+								<?php } ?>
+								
 							</div>
+							
 						</div>
 						<div class="col-xs-8 text-right menu-1">
 							<ul>
@@ -122,109 +154,114 @@ if($section_to_render == "commerce"){
 					</div>
 				</div>
 			</nav>
-			<!-- FIRST CONTAINER (CONTAINER WHERE THE BACKGROUND IS)
-									HEADER 
-								-->
-								
-								<?php 
-								if($section_to_render == "" ){
-									include "./Templates/NoSectionTemplate.php";
-								}else if($section_to_render == "loggin"){
-									include "./Templates/LogginTemplate.php";
-								}else if($section_to_render == "singup"){
-									include "./Templates/SingUpTemplate.php";
-								}else if($section_to_render == "commerce"){
-									include "./Templates/CommercePageHeader.php";
-								}else{
-									include "./Templates/NoSectionTemplate.php";
-								}
-								?>
-								<!--Resultados de la busqueda en caso de que se haya realizado ya.-->
+			<!-- FIRST CONTAINER (CONTAINER WHERE THE BACKGROUND IS) HEADER -->
 
-								<div id="gtco-counter" class="gtco-section">
-									<div class="gtco-container">
-										<div class="row">
+			<?php 
+			if($section_to_render == "" ){
+				include "./Templates/NoSectionTemplate.php";
+			}else if($section_to_render == "loggin"){
+				include "./Templates/LogginTemplate.php";
+			}else if($section_to_render == "singup"){
+				$cities = $controller->getCompleteCityList();
+				include "./Templates/SingUpTemplate.php";
 
-											<?php
+			}else if($section_to_render == "commerce"){
+				include "./Templates/CommercePageHeader.php";
+			}elseif($section_to_render == "profile"){
+				include "./Templates/NoSectionTemplate.php";
+			}else{
+				include "./Templates/NoSectionTemplate.php";
+			}
+			?>
+			<!--Resultados de la busqueda en caso de que se haya realizado ya.-->
 
-											if($section_to_render == "busqueda"){
-												include "./Views/busqueda.php";
-											}else if($section_to_render == "commerce"){
-												include "./Templates/CommercePageServices.php";
-											}else{
-												include "./Templates/DefaultTemplate.php";
-											}
-											?>
-											
-										</div>
-									</div>
-								</div>
+			<div id="gtco-counter" class="gtco-section">
+				<div class="gtco-container">
+					<div class="row">
 
-								<footer id="gtco-footer" role="contentinfo" style="background-image: url(images/backgrounds/main_bg_1.jpg)" data-stellar-background-ratio="0.5">
-									<div class="overlay"></div>
-									<div class="gtco-container">
-										<div class="row row-pb-md">
+						<?php
 
+						if($section_to_render == "busqueda"){
+							include "./Views/busqueda.php";
+						}else if($section_to_render == "commerce"){
+							include "./Templates/CommercePageServices.php";
+						}else if($section_to_render == "profile"){
+							include "./Templates/ReservationsClientView.php";
+						}else{
+							include "./Templates/DefaultTemplate.php";
+						}
+						?>
 
+					</div>
+				</div>
+			</div>
 
-
-											<div class="col-md-12 text-center">
-												<div class="gtco-widget">
-													<h3>Donde encontrarnos.</h3>
-													<ul class="gtco-quick-contact">
-														<li><a href="#"><i class="icon-phone"></i>+34 657 11 43</a></li>
-														<li><a href="#"><i class="icon-mail2"></i>mfidaf01@estudiantes.unileon.es</a></li>
-														<li><a href="#"><i class="icon-chat"></i>Contacta con nosotros</a></li>
-													</ul>
-												</div>
-												<div class="gtco-widget">
-													<h3>Redes sociales</h3>
-													<ul class="gtco-social-icons">
-														<li><a target="_blank" href="https://twitter.com"><i class="icon-twitter"></i></a></li>
-														<li><a target="_blank" href="https://facebook.com"><i class="icon-facebook"></i></a></li>
-														<li><a target="_blank" href="https://linkedin.com"><i class="icon-linkedin"></i></a></li>
-														<li><a target="_blank" href="https://cut.com"><i class="icon-dribbble"></i></a></li>
-													</ul>
-												</div>
-											</div>
-										</div>
+			<footer id="gtco-footer" role="contentinfo" style="background-image: url(images/backgrounds/main_bg_1.jpg)" data-stellar-background-ratio="0.5">
+				<div class="overlay"></div>
+				<div class="gtco-container">
+					<div class="row row-pb-md">
 
 
 
-									</div>
-								</footer>
-								<!-- </div> -->
 
+						<div class="col-md-12 text-center">
+							<div class="gtco-widget">
+								<h3>Donde encontrarnos.</h3>
+								<ul class="gtco-quick-contact">
+									<li><a href="#"><i class="icon-phone"></i>+34 657 11 43</a></li>
+									<li><a href="#"><i class="icon-mail2"></i>mfidaf01@estudiantes.unileon.es</a></li>
+									<li><a href="#"><i class="icon-chat"></i>Contacta con nosotros</a></li>
+								</ul>
 							</div>
-
-							<div class="gototop js-top">
-								<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
+							<div class="gtco-widget">
+								<h3>Redes sociales</h3>
+								<ul class="gtco-social-icons">
+									<li><a target="_blank" href="https://twitter.com"><i class="icon-twitter"></i></a></li>
+									<li><a target="_blank" href="https://facebook.com"><i class="icon-facebook"></i></a></li>
+									<li><a target="_blank" href="https://linkedin.com"><i class="icon-linkedin"></i></a></li>
+									<li><a target="_blank" href="https://cut.com"><i class="icon-dribbble"></i></a></li>
+								</ul>
 							</div>
-
-							
-							<!-- Waypoints -->
-							<script src="js/jquery.waypoints.min.js"></script>
-							<!-- Carousel -->
-							<script src="js/owl.carousel.min.js"></script>
-							<!-- countTo -->
-							<script src="js/jquery.countTo.js"></script>
-
-							<!-- Stellar Parallax -->
-							<script src="js/jquery.stellar.min.js"></script>
-
-							<!-- Magnific Popup -->
-							<script src="js/jquery.magnific-popup.min.js"></script>
-							<script src="js/magnific-popup-options.js"></script>
-
-							<script src="js/moment.min.js"></script>
-							<script src="js/bootstrap-datetimepicker.min.js"></script>
+						</div>
+					</div>
 
 
-							<!-- Main -->
-							<script src="js/main.js"></script>
 
-						</body>
-						</html>
+				</div>
+			</footer>
+			<!-- </div> -->
+
+		</div>
+
+		<div class="gototop js-top">
+			<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
+		</div>
+
+
+		<!-- Waypoints -->
+		<script src="js/jquery.waypoints.min.js"></script>
+		<!-- Carousel -->
+		<script src="js/owl.carousel.min.js"></script>
+		<!-- countTo -->
+		<script src="js/jquery.countTo.js"></script>
+
+		<!-- Stellar Parallax -->
+		<script src="js/jquery.stellar.min.js"></script>
+
+		<!-- Magnific Popup -->
+		<script src="js/jquery.magnific-popup.min.js"></script>
+		<script src="js/magnific-popup-options.js"></script>
+
+		<script src="js/moment.min.js"></script>
+		<script src="js/es.js"></script>
+		<script src="js/bootstrap-datetimepicker.min.js"></script>
+
+
+		<!-- Main -->
+		<script src="js/main.js"></script>
+
+	</body>
+</html>
 
 
 

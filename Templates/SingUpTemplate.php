@@ -21,34 +21,37 @@
 
 								<div class="tab-content">
 									<div class="tab-content-inner active" data-content="signup">
-										<form action="#">
+										<form action="" method="POST">
 											<div class="row form-group">
+
+												<input type="hidden" name="action" value="newuser">
+
 												<div class="col-md-6">
 													<label for="date-start">Nombre de usuario</label>
-													<input type="text" class="form-control">
+													<input type="text" name="username" class="form-control">
 												</div>
 												<div class="col-md-6">
 													<label for="date-start">Correo electronico</label>
-													<input type="text" class="form-control">
+													<input type="text" name="mail" class="form-control">
 												</div>
 											</div>
 											<div class="row form-group">
 												<div class="col-md-6">
 													<label for="date-start">Contraseña</label>
-													<input type="password" class="form-control">
+													<input type="password" name="password_1" class="form-control">
 												</div>
 												<div class="col-md-6">
 													<label for="date-start">Repetir Contraseña</label>
-													<input type="password" class="form-control">
+													<input type="password" name="password_2" class="form-control">
 												</div>
 											</div>
 
 											<div class="row form-group">
 												<div class="col-md-12">
 													<label for="activities">Soy...</label>
-													<select name="#" id="activities" class="form-control" onchange="swapData();">
-														<option class="force_black" value="peluqueria">Una peluqueria</option>
-														<option class="force_black" value="cliente">Un cliente</option>
+													<select name="type" id="activities" class="form-control" onchange="swapData();">
+														<option class="force_black" value="commerce">Una peluqueria</option>
+														<option class="force_black" value="client">Un cliente</option>
 													</select>
 												</div>
 											</div>
@@ -57,26 +60,23 @@
 											<div class="row form-group special">
 												<div class="col-md-4">
 													<label for="date-start">CIF</label>
-													<input type="text" class="form-control">
+													<input type="text" name="cif" class="form-control">
 												</div>
 
 												<div class="col-md-4">
 													<label for="date-start">Direccion</label>
-													<input type="text" class="form-control">
+													<input type="text" name="address" class="form-control">
 												</div>
 												<div class="col-md-4">
 													<label for="activities">Ciudad</label>
-													<select name="#" id="activities" class="form-control">
+													<select name="#" name="city" id="activities" class="form-control">
 														<?php
-														//pedir al controlador las ciudades disponibles, pintarlas con una view 
+														foreach ($cities as $value):
 														?>
-														<option class="force_black" value="leon">Leon</option>
-														<option class="force_black" value="zamora">Zamora</option>
-														<option class="force_black" value="salamanca">Salamanca</option>
-														<option class="force_black" value="palencia">Palencia</option>
-														<option class="force_black" value="soria">Soria</option>
-														<option class="force_black" value="burgos">Burgos</option>
-
+															<option class="force_black" value="<?php echo $value; ?>"><?php echo $value; ?></option>
+														<?php 
+															endforeach;
+														?>
 													</select>
 												</div>
 											</div>
@@ -84,11 +84,11 @@
 												
 												<div class="col-md-6">
 													<label for="date-start">Nombre comercial</label>
-													<input type="text" class="form-control">
+													<input type="text" name="commercialname" class="form-control">
 												</div>
 												<div class="col-md-6">
 													<label for="date-start">Descripción</label>
-													<input type="text" class="form-control">
+													<input type="text" name="description" class="form-control">
 												</div>
 											</div>
 
@@ -100,8 +100,6 @@
 
 										</form>	
 									</div>
-
-
 								</div>
 							</div>
 						</div>

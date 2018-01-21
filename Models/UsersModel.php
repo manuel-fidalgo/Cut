@@ -66,5 +66,73 @@ class UsersModel extends Model{
 
 	}
 
+	function createNewCommerce($username,$email,$password_1,$password_2,$cif,$address,$city,$comercialname,$description){
+
+
+		$sql = "INSERT INTO commerces (username, password, email, adress, CIF, comercialname, city, description) 
+				VALUES (:username, :password, :email, :adress, :CIF, :comercialname, :city, :description)";
+
+		if($password_1 == $password_2)
+			$password = $password_1;
+		else
+			throw new Exception("No password match");
+			
+
+		$res = $this->db->queryCount($sql, array(':username'=>$username, ':password'=>$password, 
+			':email'=>$email, ':adress'=>$adress, ':CIF'=>$cif, ':comercialname'=>$comercialname, 
+			':city'=>$city, ':description'=>$description));
+
+		if($res == 0)
+			throw new Exception("UserExists");
+		else
+			return "Success";
+			
+	}
+
+	function createNewClient($username,$email,$password_1,$password_2){
+
+		$sql = "INSERT INTO clients (username,email,password) VALUES (:username, :email, :password)";
+
+		if($password_1 == $password_2)
+			$password = $password_1;
+		else
+			throw new Exception("No password match");
+
+		$res = $this->db->queryCount($sql, array(':username'=>$username, ':password'=>$password,':email'=>$email));
+
+		if($res == 0)
+			throw new Exception("UserExists");
+		else
+			return "Success";
+
+	}
+
+	function logginUser($username, $password){
+
+		include 'Session/SessionManager.php';
+		$sm = SessionManager::getInstance();
+
+
+		$types = array('clients' => 'client' , 'commerces'=>'commerce' );
+
+		foreach ($types as $key => $value) {
+
+			$sql = "SELECT * FROM ".$key." WHERE username=:username AND password=:password";
+			$user = $this->db->query($sql,array(':username' => $username, ':password' => $password));
+
+			if(count($user) != 0){
+				$sm->createNewSession($user[0]['username'],$value);
+				return;
+			} 
+
+		}
+		
+		throw new Exception("No user found");
+			
+		
+
+	}
+	
+
 }
 ?>

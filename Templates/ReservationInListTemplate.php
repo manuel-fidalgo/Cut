@@ -2,7 +2,7 @@
 		<div class="fh5co-card-item">
 			<figure>
 				<div class="overlay">
-					<a  href="<?php $config->printPath('?action=cancel&userName='.$reservation['commerceUsername']); ?>">
+					<a  href="<?php $config->printPath('?action=cancel&userName='.$reservation['commerceUsername'].'&datetime='.$reservation['datetime']); ?>">
 						<i class="ti-trash red"></i>
 						<span class="center red">ELIMINAR</span>
 					</a>

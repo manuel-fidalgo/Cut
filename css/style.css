@@ -1993,3 +1993,11 @@ form label {
 .red{
   color: #f00 !important;
 }
+.error_text_0{
+  font-size: 25px;
+  color: #e5a427 ;
+}
+.error_text_1{
+  font-size: 25px;
+  color: #fff;
+}

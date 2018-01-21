@@ -50,6 +50,7 @@ class ReservationsModel extends Model{
 		return $status;
 
 	}
+
 	function getReservationsUsername($username){
 
 		$date_formated = date('Y-m-d H:i:s');
@@ -68,6 +69,12 @@ class ReservationsModel extends Model{
 
 		return $reservations;
 
+	}
+
+	function cancelReservation($commerce, $user, $datetime){
+		$sql = "DELETE FROM reservations WHERE clientUsername=:client AND commerceUsername=:commerce AND date=:date ";
+		$val = $this->db->queryCount($sql,array(':client'=>$user,':commerce'=>$commerce,':date'=>$datetime));
+		return $val;
 	}
 	
 }

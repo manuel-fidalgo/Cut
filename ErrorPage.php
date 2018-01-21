@@ -1,3 +1,6 @@
+<?php include_once 'Config.php'; 
+$config = new Config();
+?>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -107,8 +110,9 @@
 
 												<div class="row row-mt-15em">
 													<div class="col-md-7 mt-text animate-box" data-animate-effect="fadeInUp">
-														<span class="intro-text-small">Ooops! <a href="" target="_blank">Error</a></span>
-														<h1 class="cursive-font">Ha invtentado acceder a una pagina para la cual no tiene permisos, no existe o ha sido movida.</h1>	
+														<span class="error_text_0">Ooops!</span>
+														<h1 class="cursive-font color-theme">Error</h1>	
+														<span class="error_text_1">Ha intentado acceder a una pagina para la cual no tiene permisos, no existe o ha sido movida.</span>
 													</div>
 
 												</div>
@@ -119,39 +123,7 @@
 								<!--Resultados de la busqueda en caso de que se haya realizado ya.-->
 
 
-								<footer id="gtco-footer" role="contentinfo" style="background-image: url(images/backgrounds/main_bg_1.jpg)" data-stellar-background-ratio="0.5">
-									<div class="overlay"></div>
-									<div class="gtco-container">
-										<div class="row row-pb-md">
-
-
-
-
-											<div class="col-md-12 text-center">
-												<div class="gtco-widget">
-													<h3>Donde encontrarnos.</h3>
-													<ul class="gtco-quick-contact">
-														<li><a href="#"><i class="icon-phone"></i>+34 657 11 43</a></li>
-														<li><a href="#"><i class="icon-mail2"></i>mfidaf01@estudiantes.unileon.es</a></li>
-														<li><a href="#"><i class="icon-chat"></i>Contacta con nosotros</a></li>
-													</ul>
-												</div>
-												<div class="gtco-widget">
-													<h3>Redes sociales</h3>
-													<ul class="gtco-social-icons">
-														<li><a target="_blank" href="https://twitter.com"><i class="icon-twitter"></i></a></li>
-														<li><a target="_blank" href="https://facebook.com"><i class="icon-facebook"></i></a></li>
-														<li><a target="_blank" href="https://linkedin.com"><i class="icon-linkedin"></i></a></li>
-														<li><a target="_blank" href="https://cut.com"><i class="icon-dribbble"></i></a></li>
-													</ul>
-												</div>
-											</div>
-										</div>
-
-
-
-									</div>
-								</footer>
+								
 								<!-- </div> -->
 
 							</div>

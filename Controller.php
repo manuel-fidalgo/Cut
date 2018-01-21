@@ -35,9 +35,33 @@ class Controller{
                 return $this->createNewUser($get);
             }else if($get['action']=="loggin"){
                 return $this->logginUser($get);
+            }if($get['action']=="cancel"){
+                return $this->cancelReservation($get);
             }
         }
     }
+    public function cancelReservation($get){
+        
+        $commerce = $get['userName'];
+        $datetime = $get['datetime'];
+
+        include_once 'Session/SessionManager.php';
+        $sm = SessionManager::getInstance();
+
+        $user = $sm->getUsername();
+
+        include_once 'Models/ReservationsModel.php';
+        $rmodel = new ReservationsModel();
+
+        $ret = $rmodel->cancelReservation($commerce, $user, $datetime); 
+
+        if($ret!=1){
+            return "Ha ocurrido un error al borrar la reserva";
+        }else{
+            header('Location: index.php?section=profile');
+        }
+    }
+
     public function logginUser($get){
 
         $username = $get['username'];
@@ -123,17 +147,12 @@ class Controller{
         $reservationmodel = new ReservationsModel();
         $back = $reservationmodel->makeNewReservation($date, $time, $id, $service);
         
-        if($back == 0){
-            return true;
-        }else{
-            return false;
+        if($back == 1){
+            return "No se ha podido realizar la reserva";
         }
 
     }
 
-    public function cancelReservation(){
-
-    }
     public function getCompleteCityList(){
 
         include_once 'Data/Cities.php';
@@ -170,6 +189,9 @@ class Controller{
         include_once "Session/SessionManager.php";
 
         $sm = SessionManager::getInstance();
+        if(!$sm->isSession()){
+            header('Location: ErrorPage.php');
+        }
         $user = $sm->getUsername();
 
         $rmodel = new ReservationsModel();

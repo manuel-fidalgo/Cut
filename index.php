@@ -19,8 +19,7 @@ if($section_to_render == "busqueda"){
 if($section_to_render == "commerce"){
 	$commerce = $controller->getCommerce($_GET);
 }
-if($section_to_render == "profile"){
-	$controller->checkSession($_GET);
+if($section_to_render == "profile"){	
 	$reservationList = $controller->getReservationList();
 }
 
@@ -125,7 +124,7 @@ $user = $controller->getSession();
 									<img height="50px" width="50px" src="<?php $config->printPath('');?>/images/users/profile.png">
 								</a>
 								<div style="display: inline; vertical-align: middle;" >
-									<span style="font-size: 12px;"> Bienvenido de nuevo<a href="index.php?section=profile&id=<?php echo $user;?>"><?php echo $user; ?></a></span>
+									<span style="font-size: 12px;"> Bienvenido de nuevo<a href="index.php?section=profile"><?php echo $user; ?></a></span>
 								</div>
 								<?php }else{ ?>
 								<a href="<?php $config->printPath(''); ?>">
@@ -148,7 +147,13 @@ $user = $controller->getSession();
 									</ul>
 								</li> -->
 								<li><a href="<?php $config->printPath('?section=singup');?>"">Registrarse</a></li>
-								<li class="btn-cta"><a href="<?php $config->printPath('?section=loggin');?>"><span>Iniciar Sesión</span></a></li>
+								<li class="btn-cta">
+									<?php if($user==""): ?>
+										<a href="<?php $config->printPath('?section=loggin');?>"><span>Iniciar Sesión</span></a>
+									<?php else: ?>
+										<a href="<?php $config->printPath('?action=closesession');?>"><span>Cerrar Sesión</span></a>
+									<?php endif; ?>
+								</li>
 							</ul>	
 						</div>
 					</div>

@@ -26,7 +26,11 @@ if($section_to_render == "profile"){
 $message_0 = $controller->doActions($_GET);
 $message_1 = $controller->doActions($_POST);
 
+$user=""; $type="";
 $user = $controller->getSession();
+$type = $controller->getType();
+$cities = $controller->getCompleteCityList();
+
 
 ?>
 
@@ -137,7 +141,7 @@ $user = $controller->getSession();
 						</div>
 						<div class="col-xs-8 text-right menu-1">
 							<ul>
-								<li><a href="<?php $config->printPath('');?>">Principal</a></li>
+								<li><a href="<?php $config->printPath('/index.php');?>">Principal</a></li>
 								<!--<li class="has-dropdown">
 									<a href="services.html">Servicios</a>
 									<ul class="dropdown">
@@ -167,13 +171,14 @@ $user = $controller->getSession();
 			}else if($section_to_render == "loggin"){
 				include "./Templates/LogginTemplate.php";
 			}else if($section_to_render == "singup"){
-				$cities = $controller->getCompleteCityList();
 				include "./Templates/SingUpTemplate.php";
-
 			}else if($section_to_render == "commerce"){
 				include "./Templates/CommercePageHeader.php";
 			}elseif($section_to_render == "profile"){
-				include "./Templates/NoSectionTemplate.php";
+				if($type=="client")
+					include "./Templates/NoSectionTemplate.php";
+				else
+					include "./Templates/CommercePageHeaderEditable.php";
 			}else{
 				include "./Templates/NoSectionTemplate.php";
 			}
@@ -191,7 +196,13 @@ $user = $controller->getSession();
 						}else if($section_to_render == "commerce"){
 							include "./Templates/CommercePageServices.php";
 						}else if($section_to_render == "profile"){
-							include "./Templates/ReservationsClientView.php";
+							if($type=="client"):
+								include "./Templates/ReservationsClientView.php";
+							else:
+								include "./Templates/TimetableAndNewService.php";
+								include "./Templates/ReservationsCommerceView.php";
+								include "./Templates/DeleteService.php";
+							endif;
 						}else{
 							include "./Templates/DefaultTemplate.php";
 						}

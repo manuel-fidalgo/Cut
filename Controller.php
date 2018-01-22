@@ -35,25 +35,111 @@ class Controller{
                 return $this->createNewUser($get);
             }else if($get['action']=="loggin"){
                 return $this->logginUser($get);
-            }if($get['action']=="cancel"){
+            }else if($get['action']=="cancel"){
                 return $this->cancelReservation($get);
+            }else if($get['action']=='closesession'){
+                return $this->closeSession();
+            }else if($get['action'] == 'changeDataCommerce'){
+                return $this->changeDataCommerce($get);
+            }else if($get['action'] == 'changeTimetable'){
+                return $this->changeTimetable($get);
+            }else if($get['action'] == 'addService'){
+                return $this->addService($get);
+            }else if($get['action'] == 'deleteService'){
+                return $this->deleteService($get);
             }
         }
     }
+    public function deleteService($get)
+    {
+        require_once './Models/UsersModel.php';
+        $usersmodel = new UsersModel();
+
+        include_once 'Session/SessionManager.php';
+        $sm = SessionManager::getInstance();
+        $user = $sm->getUsername();
+
+        $ret = $usersmodel->deleteService($get['service'],$user);
+        if($ret == 1){
+            header("Location: index.php?section=profile");
+        }else{
+            return "No se ha podido eliminar el servicio.";
+        }
+    }
+
+    public function addService($get)
+    {
+        require_once './Models/UsersModel.php';
+        $usersmodel = new UsersModel();
+
+        include_once 'Session/SessionManager.php';
+        $sm = SessionManager::getInstance();
+        $user = $sm->getUsername();
+
+        $ret = $usersmodel->addService($user,$get['servicename'],$get['parallel'],$get['duration'],$get['price']);
+        if($ret == 1){
+            header("Location: index.php?section=profile");
+        }else{
+            return "No se ha podido añadir el servicio.";
+        }
+    }
+    public function changeTimetable($get)
+    {
+        require_once './Models/UsersModel.php';
+        $usersmodel = new UsersModel();
+
+        include_once 'Session/SessionManager.php';
+        $sm = SessionManager::getInstance();
+        $user = $sm->getUsername();
+
+        $ret = $usersmodel->changeTimetable($user,$get['opentime'],$get['closetime'],$get['dayofweekclosed']);
+        if($ret == 1){
+            header("Location: index.php?section=profile");
+        }else{
+            return "No se ha podido actualizar el horario.";
+        }
+
+    }
+    public function changeDataCommerce($get){
+
+        require_once './Models/UsersModel.php';
+        $usersmodel = new UsersModel();
+
+        include_once 'Session/SessionManager.php';
+        $sm = SessionManager::getInstance();
+        $user = $sm->getUsername();
+
+        $ret = $usersmodel->changeData($user,$get['city'],$get['address'],$get['email']);
+        if($ret==1){
+            header("Location: index.php?section=profile");
+        }else{
+            return "No se han podido cambiar los datos.";
+        }
+    }
+    public function closeSession(){
+
+
+        include_once 'Session/SessionManager.php';
+        $sm = SessionManager::getInstance();
+
+        $user = $sm->closeSession();
+        header("Location: index.php");
+    }
+
     public function cancelReservation($get){
         
-        $commerce = $get['userName'];
+        $other = $get['userName'];
         $datetime = $get['datetime'];
 
         include_once 'Session/SessionManager.php';
         $sm = SessionManager::getInstance();
 
-        $user = $sm->getUsername();
+        $me = $sm->getUsername();
 
         include_once 'Models/ReservationsModel.php';
         $rmodel = new ReservationsModel();
 
-        $ret = $rmodel->cancelReservation($commerce, $user, $datetime); 
+        $ret = $rmodel->cancelReservation($other, $me, $datetime); 
 
         if($ret!=1){
             return "Ha ocurrido un error al borrar la reserva";
@@ -71,13 +157,11 @@ class Controller{
         $usersmodel = new UsersModel();
 
         try{
-            $usersmodel->logginUser($username, $password);
+            $usersmodel->logginUser($username, $password); 
+            header('Location: index.php?section=profile');
         }catch(Exception $e){
             return "No se ha podido iniciar sesion, revisa usuario y contraseña";
         }
-
-
-
     }
 
     public function createNewUser($get){
@@ -148,7 +232,10 @@ class Controller{
         $back = $reservationmodel->makeNewReservation($date, $time, $id, $service);
         
         if($back == 1){
-            return "No se ha podido realizar la reserva";
+            header('Location: index.php?section=profile');
+            
+        }else{
+            return "No se ha podido realizar la reserva, es necesario iniciar sesion antes.";
         }
 
     }
@@ -168,6 +255,22 @@ class Controller{
 
         try{
             $user= $sm->getUsername();
+        }catch(Exception $e){
+
+        }
+
+        return $user;
+    }
+
+    public function getType(){
+
+        include_once "Session/SessionManager.php";
+
+        $sm = SessionManager::getInstance();
+        $user="";
+
+        try{
+            $user= $sm->getType();
         }catch(Exception $e){
 
         }

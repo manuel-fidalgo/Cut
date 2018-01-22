@@ -3,7 +3,9 @@ class SessionManager {
 
 	private static $instance = null;
 
-	private function __construct(){}
+	private function __construct(){
+		session_start();
+	}
 
 	public static function getInstance()
 	{
@@ -16,7 +18,7 @@ class SessionManager {
 	
 	public function createNewSession($user,$type){
 
-		session_start();
+		
 		$_SESSION['username'] = $user;
 		$_SESSION['type'] = $type;
 
@@ -24,18 +26,26 @@ class SessionManager {
 
 	public function getUsername(){
 
-		session_start();
-		$name = $_SESSION['username'];
-		if(strlen($name) === 0){
+		if(!isset($_SESSION['username']) || strlen($_SESSION['username']) === 0){
+			
 			throw new Exception("No session");
 		}else{
-			return $name;
+			return $_SESSION['username'];
+		}
+	}
+
+	public function getType(){
+
+		if(!isset($_SESSION['type']) || strlen($_SESSION['type']) === 0){
+			
+			throw new Exception("No session");
+		}else{
+			return $_SESSION['type'];
 		}
 	}
 
 	public function isSession(){
 
-		session_start();
 		$name = $_SESSION['username'];
 
 		if(strlen($name) === 0){
@@ -43,6 +53,12 @@ class SessionManager {
 		}else{
 			return true;
 		}
+	}
+	public function closeSession(){
+
+		$_SESSION = array();
+		session_destroy();
+
 	}
 }
 ?>

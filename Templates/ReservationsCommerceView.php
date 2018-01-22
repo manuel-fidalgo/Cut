@@ -1,4 +1,4 @@
-<div class="col-md-8 col-md-offset-2 text-center gtco-heading">
+<div class="col-md-8 col-md-offset-2 text-center gtco-heading" style="margin-top: 100px;">
 	<h2 class="cursive-font primary-color">Tus reservas</h2>
 
 	<?php
@@ -15,6 +15,7 @@
 
 	<?php
 	foreach ($reservationList as $reservation) {
+		$reservation['commerceUsername'] = $reservation['clientUsername'];
 		include './Templates/ReservationInListTemplate.php';
 	}
 	?>

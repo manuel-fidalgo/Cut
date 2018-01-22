@@ -128,9 +128,39 @@ class UsersModel extends Model{
 		}
 		
 		throw new Exception("No user found");
-			
-		
 
+	}
+	public function changeData($user,$city,$address,$email){
+
+		$sql = "UPDATE commerces SET email=:email , address=:address, city=:city WHERE username=:username";
+		$res = $this->db->queryCount($sql, array(':email'=>$email, ':address'=>$address,':city'=>$city, ':username'=>$user));
+		return $res;
+
+	}
+	public function changeTimetable($user, $opentime, $closetime, $dayofweekclosed){
+
+		$sql = "UPDATE timetable SET opentime=:opentime , closetime=:closetime, dayofweekclosed=:dayofweekclosed 
+				WHERE commerceUsername=:commerceUsername";
+
+		$res = $this->db->queryCount($sql, array(':opentime'=>$opentime, ':closetime'=>$closetime,
+									':dayofweekclosed'=>$dayofweekclosed, ':commerceUsername'=>$user));
+		return $res;
+	}
+
+	public function addService($user, $servicename, $parallel, $duration, $price){
+
+		$sql = "INSERT INTO services (name,commerceUsername,duration,price,parallel) VALUES (:a,:b,:c,:d,:e)";
+
+		$res = $this->db->queryCount($sql, array(':a'=>$servicename, ':b'=>$user,':c'=>$duration, ':d'=>$price, ':e'=>$parallel));
+		return $res;
+	}
+
+	public function deleteService( $servicename , $user){
+
+		$sql = "DELETE FROM services WHERE services.name = :a AND services.commerceUsername = :b";
+
+		$res = $this->db->queryCount($sql, array(':a'=>$servicename, ':b'=>$user));
+		return $res;
 	}
 	
 

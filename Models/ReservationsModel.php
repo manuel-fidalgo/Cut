@@ -50,11 +50,11 @@ class ReservationsModel extends Model{
 		return $status;
 
 	}
-
+	//The username can be a client or a commerce
 	function getReservationsUsername($username){
 
 		$date_formated = date('Y-m-d H:i:s');
-		$sql = "SELECT * FROM reservations WHERE clientUsername=:username AND date > :date ORDER BY date";
+		$sql = "SELECT * FROM reservations WHERE clientUsername=:username OR commerceUsername=:username AND date > :date ORDER BY date";
 		$reservations = $this->db->query($sql,array(':username' => $username, ':date'=>$date_formated));
 
 		foreach ($reservations as $key => $value) {
@@ -72,7 +72,7 @@ class ReservationsModel extends Model{
 	}
 
 	function cancelReservation($commerce, $user, $datetime){
-		$sql = "DELETE FROM reservations WHERE clientUsername=:client AND commerceUsername=:commerce AND date=:date ";
+		$sql = "DELETE FROM reservations WHERE ((clientUsername=:client AND commerceUsername=:commerce) OR (clientUsername=:commerce AND commerceUsername=:client)) AND date=:date ";
 		$val = $this->db->queryCount($sql,array(':client'=>$user,':commerce'=>$commerce,':date'=>$datetime));
 		return $val;
 	}

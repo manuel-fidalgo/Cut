@@ -1,6 +1,5 @@
-<!-- Checks if the reservation requested by the fronted using ajax is available -->
 <?php 
-
+	// Checks if the reservation requested by the fronted using ajax is available
 	include 'Models/ReservationsModel.php';
 
 	$model = new ReservationsModel();

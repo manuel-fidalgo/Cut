@@ -88,8 +88,7 @@
 				cache: "false",
 				success:function(data){
 
-					// alert(data);
-					if(data === "true"){
+					if(data == "true"){
 						$('#<?php echo $service['name']; ?>timePicker').addClass( "available");
 						$('#<?php echo $service['name']; ?>timePicker').removeClass( "no-available");
 						$('#<?php echo $service['name']; ?>submit').prop('disabled', false);

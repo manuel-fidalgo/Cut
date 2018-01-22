@@ -143,7 +143,7 @@ class UsersModel extends Model{
 		return $res;
 
 	}
-	public function createDefaultTimetable($user){
+	private function createDefaultTimetable($user){
 
 		$sql = "INSERT INTO timetable (commerceUsername, opentime, closetime, dayofweekclosed) VALUES (:a,:b, :c, :d)";
 		$res = $this->db->queryCount($sql,array(':a' => $user, ':b'=> '08:00:00', ':c'=>'21:00:00',':d' => '6' ));
@@ -179,3 +179,6 @@ class UsersModel extends Model{
 
 }
 ?>
+
+$__usersModel = new UsersModel();
+        $__reservationModel = new ReservationsModel();

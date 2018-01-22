@@ -8,6 +8,7 @@ class ReservationsModel extends Model{
 	{
 		parent::__construct();
 	}
+	
 	function checkDate($time, $date, $service, $id){
 		
 

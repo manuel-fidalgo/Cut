@@ -1,14 +1,20 @@
 <?php
 
+
 class Controller{
     
- 
-    function Controller(){
-        
-    }
+    
+    private $usersModel;
+    private $reservationModel;
+
 
     function __construct() {
+        require 'Models/ReservationsModel.php';
+        require 'Models/UsersModel.php';
         
+
+        $this->usersModel = new UsersModel();
+        $this->reservationModel = new ReservationsModel();
     }
 
     public function getSection($get){
@@ -62,10 +68,7 @@ class Controller{
     }
     public function newComment($get){
 
-        require_once 'Models/ReservationsModel.php';
-
-
-        include_once 'Session/SessionManager.php';
+        require_once 'Session/SessionManager.php';
         $sm = SessionManager::getInstance();
         try{
             $user = $sm->getUsername();
@@ -73,7 +76,7 @@ class Controller{
             return "No has iniciado sesion.";
         }
 
-        $reservationmodel = new ReservationsModel();
+        $reservationmodel = $this->reservationModel;
         $back = $reservationmodel->setNewComment($user, $get['text'], $get['points'], $get['commerce']);
         
         if($back == 1){
@@ -86,10 +89,8 @@ class Controller{
     }
     public function deleteService($get)
     {
-        require_once './Models/UsersModel.php';
-        $usersmodel = new UsersModel();
-
-        include_once 'Session/SessionManager.php';
+        $usersmodel = $this->usersModel;
+        require_once 'Session/SessionManager.php';
         $sm = SessionManager::getInstance();
         $user = $sm->getUsername();
 
@@ -103,10 +104,8 @@ class Controller{
 
     public function addService($get)
     {
-        require_once './Models/UsersModel.php';
-        $usersmodel = new UsersModel();
-
-        include_once 'Session/SessionManager.php';
+        $usersmodel = $this->usersModel;
+        require_once 'Session/SessionManager.php';
         $sm = SessionManager::getInstance();
         $user = $sm->getUsername();
 
@@ -119,10 +118,8 @@ class Controller{
     }
     public function changeTimetable($get)
     {
-        require_once './Models/UsersModel.php';
-        $usersmodel = new UsersModel();
-
-        include_once 'Session/SessionManager.php';
+        $usersmodel = $this->usersModel;
+        require_once 'Session/SessionManager.php';
         $sm = SessionManager::getInstance();
         $user = $sm->getUsername();
 
@@ -136,10 +133,8 @@ class Controller{
     }
     public function changeDataCommerce($get){
 
-        require_once './Models/UsersModel.php';
-        $usersmodel = new UsersModel();
-
-        include_once 'Session/SessionManager.php';
+        $usersmodel = $this->usersModel;
+        require_once 'Session/SessionManager.php';
         $sm = SessionManager::getInstance();
         $user = $sm->getUsername();
 
@@ -152,8 +147,7 @@ class Controller{
     }
     public function closeSession(){
 
-
-        include_once 'Session/SessionManager.php';
+        require_once 'Session/SessionManager.php';
         $sm = SessionManager::getInstance();
 
         $user = $sm->closeSession();
@@ -164,14 +158,12 @@ class Controller{
         
         $other = $get['userName'];
         $datetime = $get['datetime'];
-
-        include_once 'Session/SessionManager.php';
+        require_once 'Session/SessionManager.php';
         $sm = SessionManager::getInstance();
 
         $me = $sm->getUsername();
 
-        include_once 'Models/ReservationsModel.php';
-        $rmodel = new ReservationsModel();
+        $rmodel = $this->reservationModel;
 
         $ret = $rmodel->cancelReservation($other, $me, $datetime); 
 
@@ -187,8 +179,7 @@ class Controller{
         $username = $get['username'];
         $password = $get['password'];
 
-        require_once './Models/UsersModel.php';
-        $usersmodel = new UsersModel();
+        $usersmodel = $this->usersModel;
 
         try{
             $usersmodel->logginUser($username, $password); 
@@ -200,8 +191,7 @@ class Controller{
 
     public function createNewUser($get){
 
-        require_once './Models/UsersModel.php';
-        $usersmodel = new UsersModel();
+        $usersmodel = $this->usersModel;
 
         if($get['type']==="client"){
 
@@ -235,9 +225,8 @@ class Controller{
 
     public function getCommerceList($get){
 
-    	require_once './Models/UsersModel.php';
 
-    	$usersmodel = new UsersModel();
+    	$usersmodel = $this->usersModel;
 		$city = $get['ciudad'];
 		$name = $get['nombre'];
 
@@ -247,8 +236,7 @@ class Controller{
     }
     public function getCommerce($get){
 
-        require_once './Models/UsersModel.php';
-        $usersmodel = new UsersModel();
+        $usersmodel = $this->usersModel;
         $username = $get['id'];
 
         
@@ -258,14 +246,13 @@ class Controller{
     }
     public function makeReservation($get){
 
-        require_once 'Models/ReservationsModel.php';
 
         $date = $get['date'];
         $time = $get['time'];
         $id = $get['id'];
         $service = $get['service'];
 
-        $reservationmodel = new ReservationsModel();
+        $reservationmodel = $this->reservationModel;
         $back = $reservationmodel->makeNewReservation($date, $time, $id, $service);
         
         if($back == 1){
@@ -285,8 +272,7 @@ class Controller{
     }
     public function getSession(){
 
-        include_once "Session/SessionManager.php";
-
+        require_once 'Session/SessionManager.php';
         $sm = SessionManager::getInstance();
         $user="";
 
@@ -301,8 +287,7 @@ class Controller{
 
     public function getType(){
 
-        include_once "Session/SessionManager.php";
-
+        require_once 'Session/SessionManager.php';
         $sm = SessionManager::getInstance();
         $user="";
 
@@ -315,8 +300,7 @@ class Controller{
         return $user;
     }
     function checkSession($get){
-
-        include_once "Session/SessionManager.php";
+        require_once 'Session/SessionManager.php';
         $sm = SessionManager::getInstance();
         if($sm->getUsername() != $get['id']){
             header("Location: ErrorPage.php");
@@ -325,23 +309,20 @@ class Controller{
     }
     function getReservationList(){
 
-        require_once './Models/ReservationsModel.php';
-        include_once "Session/SessionManager.php";
-
+        require_once 'Session/SessionManager.php';
         $sm = SessionManager::getInstance();
         if(!$sm->isSession()){
             header('Location: ErrorPage.php');
         }
         $user = $sm->getUsername();
 
-        $rmodel = new ReservationsModel();
+        $rmodel = $this->reservationModel;
         return $rmodel->getReservationsUsername($user);
     }
     public function getAllComments($commerce){
         
 
-        require_once 'Models/ReservationsModel.php';
-        $reservationmodel = new ReservationsModel();
+        $reservationmodel = $this->reservationModel;
 
         $back = $reservationmodel->getAllComments($commerce);
         return $back;

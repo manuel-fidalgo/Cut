@@ -15,7 +15,6 @@
 
 	<?php
 	foreach ($reservationList as $reservation) {
-		$reservation['commerceUsername'] = $reservation['clientUsername'];
-		include './Templates/ReservationInListTemplate.php';
+		include './Templates/ReservationInListTemplateCommerce.php';
 	}
 	?>

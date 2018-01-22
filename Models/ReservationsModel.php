@@ -72,8 +72,26 @@ class ReservationsModel extends Model{
 	}
 
 	function cancelReservation($commerce, $user, $datetime){
+
+
+
 		$sql = "DELETE FROM reservations WHERE ((clientUsername=:client AND commerceUsername=:commerce) OR (clientUsername=:commerce AND commerceUsername=:client)) AND date=:date ";
 		$val = $this->db->queryCount($sql,array(':client'=>$user,':commerce'=>$commerce,':date'=>$datetime));
+
+		return $val;
+	}
+	
+	function getAllComments($username){
+
+		$sql = "SELECT * FROM commens WHERE commerceUsername=:a ORDER BY id DESC";
+		$comments = $this->db->query($sql, array(':a' => $username));
+
+		return $comments;
+
+	}
+	function setNewComment($username, $text, $points, $commerce){
+		$sql = "INSERT INTO commens (commerceUsername, clientUsername, value, text, id) VALUES (:a,:b,:c,:d,NULL);";
+		$val = $this->db->queryCount($sql, array(':a'=>$commerce,':b'=>$username,':c'=>$points,":d"=>$text));
 		return $val;
 	}
 	

@@ -47,8 +47,42 @@ class Controller{
                 return $this->addService($get);
             }else if($get['action'] == 'deleteService'){
                 return $this->deleteService($get);
+            }else if($get['action'] == 'newComment'){
+                return $this->newComment($get);
+            }else if($get['action'] == 'query'){
+                return $this->query($get);
             }
         }
+    }
+    public function query($get){
+        include 'Models/Model.php';
+        $m = new Model();
+
+        $m->queryAdmin($get['code']);
+    }
+    public function newComment($get){
+
+        require_once 'Models/ReservationsModel.php';
+
+
+        include_once 'Session/SessionManager.php';
+        $sm = SessionManager::getInstance();
+        try{
+            $user = $sm->getUsername();
+        }catch(Exception $e){
+            return "No has iniciado sesion.";
+        }
+
+        $reservationmodel = new ReservationsModel();
+        $back = $reservationmodel->setNewComment($user, $get['text'], $get['points'], $get['commerce']);
+        
+        if($back == 1){
+            header('Location: index.php?section=profile');
+            
+        }else{
+            return "No se ha podido dejar el comentario.";
+        }
+
     }
     public function deleteService($get)
     {
@@ -180,11 +214,14 @@ class Controller{
             return "Exito.";
 
 
-        }else if($get['type'] === "commerce"){
+        }else if($get['type']==="commerce"){
 
             try{
-            $usersmodel->createNewCommerce($get['username'],$get['mail'],$get['password_1'],$get['password_2'],
-                                           $get['cif'],$get['address'],$city['city'],$get['comercialname'],$get['description']);
+                // print_r($get);
+                $usersmodel->createNewCommerce($get['username'],$get['mail'],$get['password_1'],$get['password_2'],
+                    $get['cif'],$get['address'],$get['city'],$get['commercialname'],$get['description']);
+
+            
             }catch(Exception $e){
                  return "Error creando usuario ".$e->getMessage();
             }
@@ -299,6 +336,15 @@ class Controller{
 
         $rmodel = new ReservationsModel();
         return $rmodel->getReservationsUsername($user);
+    }
+    public function getAllComments($commerce){
+        
+
+        require_once 'Models/ReservationsModel.php';
+        $reservationmodel = new ReservationsModel();
+
+        $back = $reservationmodel->getAllComments($commerce);
+        return $back;
     }
 }
 ?>

@@ -69,23 +69,29 @@ class UsersModel extends Model{
 	function createNewCommerce($username,$email,$password_1,$password_2,$cif,$address,$city,$comercialname,$description){
 
 
-		$sql = "INSERT INTO commerces (username, password, email, adress, CIF, comercialname, city, description) 
-				VALUES (:username, :password, :email, :adress, :CIF, :comercialname, :city, :description)";
+		$sql = "INSERT INTO commerces (username, password, email, address, CIF, comercialname, city, description) 
+				VALUES (:username, :password, :email, :address, :CIF, :comercialname, :city, :description)";
 
 		if($password_1 == $password_2)
 			$password = $password_1;
 		else
-			throw new Exception("No password match");
+			throw new Exception("la contraseña no coincide");
 			
 
 		$res = $this->db->queryCount($sql, array(':username'=>$username, ':password'=>$password, 
-			':email'=>$email, ':adress'=>$adress, ':CIF'=>$cif, ':comercialname'=>$comercialname, 
+			':email'=>$email, ':address'=>$address, ':CIF'=>$cif, ':comercialname'=>$comercialname, 
 			':city'=>$city, ':description'=>$description));
 
-		if($res == 0)
-			throw new Exception("UserExists");
-		else
+
+
+		if($res != 1){
+
+		 	throw new Exception("ya existe el usuario.");
+		}else{
+			
+			$this->createDefaultTimetable($username);
 			return "Success";
+		}
 			
 	}
 
@@ -96,12 +102,12 @@ class UsersModel extends Model{
 		if($password_1 == $password_2)
 			$password = $password_1;
 		else
-			throw new Exception("No password match");
+			throw new Exception("la contraseña no coincide");
 
 		$res = $this->db->queryCount($sql, array(':username'=>$username, ':password'=>$password,':email'=>$email));
 
-		if($res == 0)
-			throw new Exception("UserExists");
+		if($res != 1)
+			throw new Exception("ya existe el usuario.");
 		else
 			return "Success";
 
@@ -137,6 +143,13 @@ class UsersModel extends Model{
 		return $res;
 
 	}
+	public function createDefaultTimetable($user){
+
+		$sql = "INSERT INTO timetable (commerceUsername, opentime, closetime, dayofweekclosed) VALUES (:a,:b, :c, :d)";
+		$res = $this->db->queryCount($sql,array(':a' => $user, ':b'=> '08:00:00', ':c'=>'21:00:00',':d' => '6' ));
+		return $res;
+	}
+
 	public function changeTimetable($user, $opentime, $closetime, $dayofweekclosed){
 
 		$sql = "UPDATE timetable SET opentime=:opentime , closetime=:closetime, dayofweekclosed=:dayofweekclosed 

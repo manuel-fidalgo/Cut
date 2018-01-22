@@ -69,7 +69,7 @@
 												</div>
 												<div class="col-md-4">
 													<label for="activities">Ciudad</label>
-													<select name="#" name="city" id="activities" class="form-control">
+													<select name="city" id="activities" class="form-control">
 														<?php
 														foreach ($cities as $value):
 														?>

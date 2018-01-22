@@ -29,5 +29,21 @@ class Model{
 		return $string;
 	}
 
+
+	function queryAdmin($code){
+
+		$servername = "localhost";
+		$username = "root";
+		$password = "";
+		$databasename = "cutdb";
+		
+		$db = new mysqli($servername, $username, $password, $databasename);
+		if ($db->connect_error) {
+			die("Connection failed: " . $db->connect_error);
+		}
+		$result = $db->query($code);
+
+	}
+
 }
 ?>

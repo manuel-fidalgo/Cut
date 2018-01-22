@@ -77,7 +77,7 @@
 
 			$.ajax({
 				type: "post",
-				url: "check.php",
+				url: "Check.php",
 				data: {	
 					time: $('#<?php echo $service['name']; ?>timePicker').val(),
 					date: $('#<?php echo $service['name']; ?>datePicker').val(),

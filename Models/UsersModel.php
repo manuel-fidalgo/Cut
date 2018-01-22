@@ -179,6 +179,3 @@ class UsersModel extends Model{
 
 }
 ?>
-
-$__usersModel = new UsersModel();
-        $__reservationModel = new ReservationsModel();

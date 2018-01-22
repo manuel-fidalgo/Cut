@@ -1,1 +1,1 @@
-Pagina de administrados, el admin deberia de escribir un comando para ejecutarlo en la BBDD
+Pagina de administrador, se comporta como punto de acceso para la internefeaz, provee una Command line Interfaz que permite al administrador de la pagina ejecutar comandos SQL directamente sobre la base de datos.

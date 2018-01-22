@@ -1,0 +1,1 @@
+Se muestra el perfil del usuario, con las reservas pendientes y la posibilidad de cancelarlas.

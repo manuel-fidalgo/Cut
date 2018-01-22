@@ -213,7 +213,13 @@
 
 							<div class="collapse" id="collapseExample">
 								<div class="card card-body">
-									<?php include_once './Templates/Help.php'; ?>
+
+									<?php 
+									if($section_to_render!="") 
+										include_once './HelpFiles/'.$section_to_render.'.php';
+									else
+										include_once './HelpFiles/main.php';
+									?>
 								</div>
 							</div>
 						</div>

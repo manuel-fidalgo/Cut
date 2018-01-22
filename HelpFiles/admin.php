@@ -1,0 +1,1 @@
+Pagina de administrados, el admin deberia de escribir un comando para ejecutarlo en la BBDD

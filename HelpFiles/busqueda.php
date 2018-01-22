@@ -1,0 +1,1 @@
+Lista de las peluquerias que se coinciden con los parametros de busqueda

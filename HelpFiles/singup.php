@@ -1,0 +1,1 @@
+Pagina de registro, que permite, usando un flag, distinguir si eres un clinete o una peluqueria.

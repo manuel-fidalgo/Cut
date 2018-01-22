@@ -1,0 +1,1 @@
+Seccion de loggin comun a comercios y clientes. 
